@@ -1,12 +1,18 @@
 package main.ventanas;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JList;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import main.componentes.MetedosCartas;
+import main.implementacionesDAO.ConectionExist;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -55,6 +61,16 @@ public class VentanaPrincipal {
 		JButton button_1 = new JButton("<-");
 		
 		JButton btnCargarCartas = new JButton("Load Cards");
+		btnCargarCartas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ConectionExist ce = new ConectionExist();
+				MetedosCartas mc = new MetedosCartas();
+				ce.conectionCards();
+				list.setModel(mc.insertarCartasListas());
+			}
+		});
 		
 		JButton btnRandomCards = new JButton("Random cards");
 		
@@ -64,8 +80,13 @@ public class VentanaPrincipal {
 		textField.setColumns(10);
 		
 		JButton btnLoadDeck = new JButton("Load Deck");
-		
-		
+		btnLoadDeck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		
 		
 		

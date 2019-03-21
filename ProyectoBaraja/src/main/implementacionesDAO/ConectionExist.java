@@ -19,83 +19,63 @@ import main.models.Carta;
 public class ConectionExist implements ICarta{
 
 	protected static String DRIVER = "org.exist.xmldb.DatabaseImpl"; 
-	protected static String URI = "xmldb:exist://localhost:8844/exist/xmlrpc"; 
-	protected static String collectionPath = "/db/ProyectoBaraja/"; 
+	protected static String URI = "xmldb:exist://localhost:8844/exist/xmlrpc/db/ProyectoBaraja"; 
+//	protected static String collectionPath = "ProyectoBaraja"; 
 	protected static String resourceName = "cartas";
 
-	private static ConectionExist conectionExist;
 	private static Class c1;
 	private Database database;
 	private ArrayList<Carta> cartas = new ArrayList<Carta>();
 
 
-	private void conexion() {
-
+	public void conexion() {
 		try {
 			c1 = Class.forName(DRIVER);
-			try {
-				database = (Database) c1.newInstance();
-				try {
-					DatabaseManager.registerDatabase(database);
-				} catch (XMLDBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			database = (Database) c1.newInstance();
+			DatabaseManager.registerDatabase(database);
+			
+		}catch (InstantiationException | IllegalAccessException | ClassNotFoundException | XMLDBException e) {
 			e.printStackTrace();
-		} 
+		}
 
 	}
-
-	private void desconectar() {
+	
+	public void desconectar() {
 		c1 = null;
 		database = null;
 	}
-
-
-	public static ConectionExist getInstance() {
-		if(conectionExist==null) {
-			conectionExist = new ConectionExist();
-		}
-		return conectionExist;
+	
+	
+	@Override
+	public ArrayList<Carta> cogerCartas() {
+		return cartas;
 	}
-
-	private ConectionExist() {
+	
+	public ArrayList<Carta> conectionCards() {
 		conexion();
 		try {
 			Collection col = DatabaseManager.getCollection(URI); 
-
+	
 			XMLResource res = (XMLResource) col.getResource(resourceName);
 			JSONObject xmlJSONObj = XML.toJSONObject((String)res.getContent());
-
+	
 			JSONArray allCards = xmlJSONObj.getJSONObject("cards").getJSONArray("card");
-
+	
 			cartas.clear();
 			for (Object object : allCards) {
 				Carta data = new Gson().fromJson(object.toString(), Carta.class);
 				cartas.add(data);
+				
 			}
-
+	
 		} catch (XMLDBException e) {
 			e.printStackTrace();
 		}finally {
 			desconectar();
 		}
-
-	}
-
-	@Override
-	public ArrayList<Carta> cogerCartas() {
 		return cartas;
+	
 	}
-
-
+	
+	
 }
