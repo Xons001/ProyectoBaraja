@@ -41,7 +41,9 @@ public class ConectionMongoDB implements IBaraja{
 
 
 	private void conectarOcrearColeccion() {
+		//Con esto buscamos en mongoDB una base de datos llamada Baraja
 		dbMongo = mongoClient.getDatabase("dbBaraja");
+		//Si no existe la crea con ese nombre
 		collectionMongo = dbMongo.getCollection("Baraja");		
 	}
 

@@ -138,21 +138,24 @@ public class VentanaPrincipal {
 					Carta carta = MetodosCartas.cartasEscogidas.get(listaDerecha.getSelectedIndex());
 					modelo = new DefaultListModel<>();
 					modeloBaraja = new DefaultListModel<>();
+					//sumamos el valor de las cartas
 					sumaValor = sumaValor - carta.getValue();
 
+					// insertamos el dato del primer array al segundo, el dato del primer array se
+					// elimina
 					MetodosCartas.cartasEscogidas.remove(carta);
 					MetodosCartas.cartasNombre.add(carta);
 
+					//printamos el valor de las cartas en el label
 					valorTotal.setText(Integer.toString(sumaValor));
+					//prinatmos las dos barajas de las dos listas
 					for (Carta cartas : MetodosCartas.cartasNombre) {
 						modelo.addElement(cartas.getName() + " Valor: " + cartas.getValue());
 					}
-
 					listaIquierda.setModel(modelo);
 					for (Carta cartas : MetodosCartas.cartasEscogidas) {
 						modeloBaraja.addElement(cartas.getName() + " Valor: " + cartas.getValue());
 					}
-
 					listaDerecha.setModel(modeloBaraja);
 
 				} catch (ArrayIndexOutOfBoundsException errorNull) {
@@ -179,22 +182,31 @@ public class VentanaPrincipal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//instanciamos los list model 
 				modelo = new DefaultListModel<>();
 				modeloBaraja = new DefaultListModel<>();
+				//borramos todos los elementos para que no se acumulen
 				modeloBaraja.removeAllElements();
 				listaDerecha.setModel(modeloBaraja);
+				//vaciamos el arrayList de cartas de la baraja
 				MetodosCartas.cartasEscogidas.clear();
 				sumaValor = 0;
 				boolean salir = true;
+				//creamos una variable donde buscara la carta con el valor mas pequeno
 				int valorMasPequeno = 0;
+				//recorremos toda la lista y busca cual es la carta con el valor mas pequeno
 				for (Carta cartas1 : MetodosCartas.cartasNombre) {
 					if (cartas1.getValue() < 20) {
 						valorMasPequeno = cartas1.getValue();
 					}
 				}
+				//volvemos a llenar el list model
 				MetodosCartas.insertarCartasListas(modelo);
+				//aqui estamos insertando los datos de una la lista a la otra hasta que el valor 
+				//de la suma de las cartas llega 20
 				int sumaValorBaraja = sumaValor + valorMasPequeno;
 				while(sumaValorBaraja <= 20 && salir) {
+					//la siguiente sentencia coge un elemento del list model de forma aleatoria 
 					Carta carta = MetodosCartas.cartasNombre.get(new Random().nextInt(MetodosCartas.cartasNombre.size()));
 					sumaValor = sumaValor + carta.getValue();
 					if(sumaValor <= 20) {
@@ -232,11 +244,15 @@ public class VentanaPrincipal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//nos conectamos a la base de datos de mongo db
 				ConectionMongoDB m = new ConectionMongoDB();
+				//si funciona entra a este metodo
 				if(load) {
+					//con esto podemos modificar los datos de una baraja ya creada y guardarla
 					Baraja b1 = new Baraja(barajaCaragada.getDeckName(), valorTotal.getText(),MetodosCartas.cartasEscogidas);
 					m.modificarBarajaCreada(b1);
 				}else {
+					//coge los datos de la lista de baraja, le asigna un nombre a la colleccion y lo guarda
 					String Barajanombre= JOptionPane.showInputDialog("Introudce el nombre: ");
 					Baraja b1 = new Baraja(Barajanombre, valorTotal.getText(),MetodosCartas.cartasEscogidas);
 					m.saveBaraja(b1);
@@ -260,13 +276,11 @@ public class VentanaPrincipal {
 					ConectionMongoDB m = new ConectionMongoDB();
 					Baraja b1;
 					b1 = m.getBarajaPorNombre(textFieldBaraja.getText());
-					System.out.println(b1.getBaraja().toString());
-					System.out.println(b1.getDeckName());
+					
 					for (Carta cartas2 : b1.getBaraja()) {
 						modeloBaraja.addElement(cartas2.getName() + " Valor: " + cartas2.getValue());
 					}
 					barajaCaragada = b1;
-					System.out.println(b1.getDeckValue());
 					valorTotal.setText(b1.getDeckValue());
 					MetodosCartas.cartasEscogidas = b1.getBaraja();
 					listaDerecha.setModel(modeloBaraja);
