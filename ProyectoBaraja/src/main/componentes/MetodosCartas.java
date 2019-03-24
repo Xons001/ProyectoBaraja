@@ -14,6 +14,7 @@ public class MetodosCartas {
 	public static ArrayList<Carta> cartasNombre = new ArrayList<>();
 	public static ArrayList<Carta> cartasEscogidas = new ArrayList<>();
 
+	
 	public static ConectionExist ce;
 	public static VentanaPrincipal vp;
 

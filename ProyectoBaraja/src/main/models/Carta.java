@@ -60,8 +60,7 @@ public class Carta {
 	
 	@Override
 	public String toString() {
-		return "Carta [name=" + name + ", summonCost=" + summonCost + ", attack=" + attack + ", defense=" + defense
-				+ ", value=" + value + "]";
+		return name + " Valor: " + value;
 	}
 
 	

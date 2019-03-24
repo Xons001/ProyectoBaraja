@@ -1,15 +1,16 @@
 package main.models;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Baraja {
 
 	private String deckName;
 	private String deckValue;
-	private Carta[] baraja;
+	private ArrayList<Carta> baraja;
 	
 	//Constructor
-	public Baraja(String deckName, String deckValue, Carta[] baraja) {
+	public Baraja(String deckName, String deckValue,ArrayList<Carta> baraja) {
 		this.deckName = deckName;
 		this.deckValue = deckValue;
 		this.baraja = baraja;
@@ -22,7 +23,7 @@ public class Baraja {
 	public String getDeckValue() {
 		return deckValue;
 	}
-	public Carta[] getBaraja() {
+	public ArrayList<Carta> getBaraja() {
 		return baraja;
 	}
 
@@ -33,15 +34,16 @@ public class Baraja {
 	public void setDeckValue(String deckValue) {
 		this.deckValue = deckValue;
 	}
-	public void setBaraja(Carta[] baraja) {
+	public void setBaraja(ArrayList<Carta> baraja) {
 		this.baraja = baraja;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Baraja [deckName=" + deckName + ", deckValue=" + deckValue + ", baraja=" + Arrays.toString(baraja)
-				+ "]";
+		return "Baraja [deckName=" + deckName + ", deckValue=" + deckValue + ", baraja=" + baraja + "]";
 	}
+	
+	
 	
 	
 }
