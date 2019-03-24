@@ -2,6 +2,8 @@ package main.implementacionesDAO;
 
 import java.util.NoSuchElementException;
 
+import javax.swing.JOptionPane;
+
 import org.bson.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,14 +26,14 @@ public class ConectionMongoDB implements IBaraja{
 	private MongoDatabase dbMongo;
 	private MongoCollection<Document> collectionMongo;
 	private Document userDoc;
-	
-	
+
+
 	private void conexion() {
 		connectionString = new MongoClientURI("mongodb://localhost:27017");
 		mongoClient = new MongoClient(connectionString);		
 	}
 
-	
+
 	private void desconectar() {
 		mongoClient.close();
 		connectionString=null;
@@ -40,22 +42,22 @@ public class ConectionMongoDB implements IBaraja{
 
 	private void conectarOcrearColeccion() {
 		dbMongo = mongoClient.getDatabase("dbBaraja");
-		collectionMongo = dbMongo.getCollection("Barajas1");		
+		collectionMongo = dbMongo.getCollection("Baraja");		
 	}
 
 
 	public void deconectarColeccion() {
-		// TODO Auto-generated method stub
 		dbMongo = null;
 		collectionMongo = null;
-		
+
 	}
 
 	public Baraja getBarajaPorNombre(String name) {
+
 		conexion();
 		conectarOcrearColeccion();
 		MongoCursor<Document> cursor = collectionMongo.find(Filters.eq("deckName", name)).iterator();
-		
+
 		Baraja baraja;
 		if(cursor.hasNext()) {
 			Document document = cursor.next();
@@ -66,8 +68,9 @@ public class ConectionMongoDB implements IBaraja{
 			return null;
 		}
 	}
-	
+
 	public void saveBaraja(Baraja b1) {
+		
 		conexion();
 		conectarOcrearColeccion();
 		MongoCursor<Document> cursor = collectionMongo.find(Filters.eq("deckName", b1.getDeckName())).iterator();
@@ -77,11 +80,11 @@ public class ConectionMongoDB implements IBaraja{
 		if(!cursor.hasNext()) {
 			collectionMongo.insertOne(userDoc);
 		}
-		
+
 		desconectar();
 		deconectarColeccion();
 	}
-	
+
 	public void modificarBarajaCreada(Baraja b1) {
 		conexion();
 		conectarOcrearColeccion();
