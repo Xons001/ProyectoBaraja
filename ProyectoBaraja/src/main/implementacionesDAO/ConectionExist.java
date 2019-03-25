@@ -19,9 +19,10 @@ import main.models.Carta;
 public class ConectionExist implements ICarta{
 
 	protected static String DRIVER = "org.exist.xmldb.DatabaseImpl"; 
-	protected static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/ProyectoBaraja"; 
-//	protected static String collectionPath = "ProyectoBaraja"; 
-	protected static String resourceName = "cartas.xml";
+	//Para probarlo tienes que poner la ruta correcta de donde tengas la base de datos
+	protected static String URI = "xmldb:exist://localhost:8844/exist/xmlrpc/db/ProyectoBaraja"; 
+	//Tienes que fijarte como se llama el archivo de xml en la bd Exist, fijarte si tiene el xml al final o no.
+	protected static String resourceName = "cartas";
 
 	private static Class c1;
 	private Database database;
